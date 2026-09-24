@@ -27,7 +27,7 @@ The project codebase has been audited and fixed for production readiness:
 
 ### Option A: Local / Server Container Deployment (Docker Compose) - **Recommended**
 
-The root directory contains `docker-compose.yml`, `backend/vectra/Dockerfile`, and `frontend/Dockerfile`.
+The root directory contains `docker-compose.yml`, `backend/Dockerfile`, and `frontend/Dockerfile`.
 
 1. **Prerequisites**: Ensure [Docker Desktop](https://www.docker.com/) is installed and running.
 2. **Start all services**:

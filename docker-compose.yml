@@ -18,7 +18,7 @@ services:
 
   backend:
     build:
-      context: ./backend/vectra
+      context: ./backend
       dockerfile: Dockerfile
     container_name: vectra-backend
     restart: always
