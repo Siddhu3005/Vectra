@@ -1,0 +1,19 @@
+# IDE settings
+.vscode/
+.idea/
+*.classpath
+*.project
+*.settings/
+
+# Build & Dependencies
+target/
+dist/
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
