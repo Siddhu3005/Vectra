@@ -21,11 +21,14 @@ public class AssignmentServiceImpl implements AssignmentService {
     private final DroneRepository drones;
     private final MaintenanceRepository maintenance;
     private final OperatorRepository operators;
+    private final UserRepository users;
 
     public AssignmentServiceImpl(AssignmentRepository assignments, MissionRepository missions,
-            DroneRepository drones, MaintenanceRepository maintenance, OperatorRepository operators) {
+            DroneRepository drones, MaintenanceRepository maintenance, OperatorRepository operators,
+            UserRepository users) {
         this.assignments = assignments; this.missions = missions;
         this.drones = drones; this.maintenance = maintenance; this.operators = operators;
+        this.users = users;
     }
 
     @Override @Transactional
@@ -161,6 +164,11 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .orElseThrow(() -> new MissionNotFoundException(missionId));
         Assignment assignment = assignments.findByMission(mission)
                 .orElseThrow(() -> new AssignmentException("Mission has no assignment"));
+        User user = users.findByEmail(email.toLowerCase())
+                .orElse(null);
+        if (user != null && user.getRole() == UserRole.ADMIN) {
+            return assignment;
+        }
         Operator operator = operatorFor(email);
         if (assignment.getOperator() == null || !assignment.getOperator().getOperatorId().equals(operator.getOperatorId()))
             throw new AssignmentException("Mission is not assigned to the authenticated operator");

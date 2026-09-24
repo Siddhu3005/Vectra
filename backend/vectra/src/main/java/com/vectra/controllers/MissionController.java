@@ -11,28 +11,45 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 
-@RestController @RequestMapping("/api/missions")
+@RestController
+@RequestMapping("/api/missions")
 public class MissionController {
     private final MissionService missions;
     private final AssignmentService assignments;
+
     public MissionController(MissionService missions, AssignmentService assignments) {
-        this.missions = missions; this.assignments = assignments;
+        this.missions = missions;
+        this.assignments = assignments;
     }
-    @GetMapping public List<Mission> all() { return missions.getAllMissions(); }
-    @GetMapping("/{id}") public Mission get(@PathVariable Long id) { return missions.getMission(id); }
-    @PostMapping public ResponseEntity<Mission> create(@Valid @RequestBody MissionRequest r) {
+
+    @GetMapping
+    public List<Mission> all() {
+        return missions.getAllMissions();
+    }
+
+    @GetMapping("/{id}")
+    public Mission get(@PathVariable Long id) {
+        return missions.getMission(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<Mission> create(@Valid @RequestBody MissionRequest r) {
         return ResponseEntity.status(HttpStatus.CREATED).body(missions.createMission(r));
     }
-    @PutMapping("/{id}") public Mission update(@PathVariable Long id, @Valid @RequestBody MissionRequest r) {
+
+    @PutMapping("/{id}")
+    public Mission update(@PathVariable Long id, @Valid @RequestBody MissionRequest r) {
         return missions.updateMission(id, r);
     }
+
     @PutMapping("/{id}/start")
-    @PreAuthorize("hasRole('OPERATOR')")
+    @PreAuthorize("hasAnyRole('OPERATOR', 'ADMIN')")
     public Mission start(@PathVariable Long id, Authentication authentication) {
         return assignments.startMission(id, authentication.getName());
     }
+
     @PutMapping("/{id}/complete")
-    @PreAuthorize("hasRole('OPERATOR')")
+    @PreAuthorize("hasAnyRole('OPERATOR', 'ADMIN')")
     public Mission complete(@PathVariable Long id, Authentication authentication) {
         return assignments.completeMission(id, authentication.getName());
     }

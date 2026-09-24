@@ -9,7 +9,7 @@ import EmptyState from '../../components/EmptyState';
 import Modal from '../../components/Modal';
 import { getDashboard } from '../../services/dashboardService';
 import { getMissions, startMission, completeMission } from '../../services/missionService';
-import { getMaintenance } from '../../services/maintenanceService';
+import { getMaintenance, completeMaintenance } from '../../services/maintenanceService';
 import { getMyMissions } from '../../services/assignmentService';
 import { getMyProfile } from '../../services/operatorService';
 import { errorMessage } from '../../services/api';
@@ -248,7 +248,6 @@ function MaintenanceEngineerDashboard({ stats, maintenance, onRefresh }) {
   const complete = async (id) => {
     setBusy(id);
     try {
-      const { completeMaintenance } = await import('../../services/maintenanceService');
       await completeMaintenance(id);
       notify('Maintenance marked complete');
       await onRefresh();

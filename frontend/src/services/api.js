@@ -14,14 +14,19 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const status = error.response?.status;
+    if (status === 401) {
       localStorage.removeItem('vectra_token');
       localStorage.removeItem('vectra_user');
-      if (window.location.pathname !== '/login') window.location.assign('/login?expired=true');
+      if (window.location.pathname !== '/login') {
+        window.location.assign('/login?expired=true');
+      }
     }
     return Promise.reject(error);
   },
 );
+
+
 
 export const errorMessage = (error) =>
   error.response?.data?.message || error.response?.data?.error || error.message || 'Something went wrong';

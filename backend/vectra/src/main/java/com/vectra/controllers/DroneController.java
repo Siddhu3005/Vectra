@@ -61,7 +61,7 @@ public class DroneController {
     }
 
     @GetMapping("/{id}/history")
-    @PreAuthorize("hasAnyRole('ADMIN', 'MAINTENANCE_ENGINEER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MAINTENANCE_ENGINEER', 'OPERATOR', 'WAREHOUSE_MANAGER')")
     public ResponseEntity<DroneHistoryResponse> getDroneHistory(@PathVariable Long id) {
         return ResponseEntity.ok(droneService.getHistory(id));
     }

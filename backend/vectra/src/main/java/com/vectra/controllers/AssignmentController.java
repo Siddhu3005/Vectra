@@ -21,17 +21,17 @@ public class AssignmentController {
         return assignments.completeAssignment(id);
     }
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_MANAGER', 'OPERATOR')")
     public List<Assignment> all() {
         return assignments.getAll();
     }
     @GetMapping("/recommended")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_MANAGER', 'OPERATOR')")
     public List<Assignment> recommended() {
         return assignments.getRecommended();
     }
     @PutMapping("/{id}/assign-operator")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_MANAGER')")
     public Assignment assignOperator(@PathVariable Long id, @Valid @RequestBody OperatorAssignmentRequest request) {
         return assignments.assignOperator(id, request.getOperatorId());
     }
